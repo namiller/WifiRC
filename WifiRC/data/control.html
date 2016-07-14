@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <title>RC Controller</title>
+        <style>
+
+		body {
+			overflow	: hidden;
+			padding		: 0;
+			margin		: 0;
+			background-color: #BBB;
+            height: 100%;
+		}
+        html {
+            height: 100%;
+        }
+            
+		#info {
+			position	: absolute;
+			top		: 0px;
+			width		: 100%;
+			padding		: 5px;
+			text-align	: center;
+		}
+		#container {
+			width		: 100%;
+			height		: 100%;
+			overflow	: hidden;
+			padding		: 0;
+			margin		: 0;
+			-webkit-user-select	: none;
+			-moz-user-select	: none;
+		}
+		
+        </style>
+    </head>
+    <body>
+        <div id="container"></div>
+        <div id="info"><h1>Hi Tech Car Remote Control</h1></div>
+    </body>
+    <script src="/joystick.js"></script>
+    <script>
+        var connection = new WebSocket('ws://'+location.hostname+':81/', ['arduino']);
+        var joystick = new VirtualJoystick({container : document.getElementById('container'), mouseSupport: true});
+        setInterval(function() {
+           connection.send('(' + joystick.deltaX() + ',' + joystick.deltaY() +')'); 
+        }, 1000/30);
+    </script>
+</html>
